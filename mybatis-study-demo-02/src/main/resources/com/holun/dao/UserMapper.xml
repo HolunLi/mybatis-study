@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.holun.dao.UserMapper">
+    <select id="getUserList" resultType="user">
+        select * from user
+    </select>
+
+    <!-- 模糊查询 -->
+    <select id="selectUserByLike" parameterType="string" resultType="user">
+        select * from user where name like concat('%', #{value}, '%')
+    </select>
+
+    <!--<select id="selectUserByLike" parameterType="String" resultType="com.holun.entity.User">
+        select * from user where name like ""#{value}"%"
+    </select>-->
+</mapper>

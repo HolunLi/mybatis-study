@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.holun</groupId>
+    <artifactId>mybatis-study</artifactId>
+    <packaging>pom</packaging> <!--父项目的打包方式必须是pom -->
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>mybatis-study-demo-01</module>
+        <module>mybatis-study-demo-02</module>
+        <module>mybatis-study-demo-03</module>
+        <module>mybatis-study-demo-04</module>
+        <module>mybatis-study-demo-05</module>
+        <module>mybatis-study-demo-06</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <mybatis-version>3.5.7</mybatis-version>
+    </properties>
+
+    <dependencies>
+        <!-- 导入junit依赖,junit是单元测试工具 -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- 导入mybatis依赖 -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>${mybatis-version}</version>
+        </dependency>
+
+        <!-- 导入mysql数据库驱动 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.23</version>
+        </dependency>
+
+        <!-- 导入lombok依赖 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+        </dependency>
+
+    </dependencies>
+
+    <!-- 依赖统一管理(依赖容器) -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.17</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <!-- 配置资源文件插件 -->
+        <resources>
+            <resource>
+                <!--资源文件所在的目录（注意在maven项目中,存放在src/main/java目录下的资源文件是会被忽略扫描的）-->
+                <directory>src/main/java</directory>
+                <!-- 该目录下的.properties文件和.xml文件都会被扫描到-->
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+    </build>
+</project>

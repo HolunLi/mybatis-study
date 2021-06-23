@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.holun.dao.TeacherMapper">
+    <resultMap id="teacherResultMap" type="teacher">
+        <result property="id" column="id" />
+        <result property="name" column="name" />
+        <!--
+        Teacher类中的属性students是一个集合,属性的类型是集合的话,要使用<collection>来特殊处理
+        javaType是属性students的类型,因为属性students的类型是List<Student>,所以它的javaType可以为 ArrayList、LinkedList、List、或Collection
+        如果这里没有显示的指明javaType,则默认为ArrayList
+        ofType 是集合中的泛型。比如List<Student>中的泛型就是Student。
+        -->
+        <collection property="students" javaType="list" ofType="student">
+            <result property="id" column="sid" />
+            <result property="name" column="sname" />
+            <result property="tid" column="tid" />
+        </collection>
+    </resultMap>
+
+    <select id="getTeacherById" parameterType="_int" resultMap="teacherResultMap">
+        select teacher.id ,teacher.name, student.id as sid, student.name as sname,student.tid
+        from teacher left join student
+        on teacher.id = student.tid
+        where teacher.id=#{id}
+    </select>
+
+    <!-- 连接查询-->
+    <select id="queryAllTeachers" resultMap="teacherResultMap">
+        select teacher.id ,teacher.name, student.id as sid, student.name as sname,student.tid
+        from teacher left join student
+                               on teacher.id = student.tid
+    </select>
+
+    <!-- 嵌套查询 -->
+    <!--<resultMap id="teacherResultMap2" type="teacher" >
+        <result property="id" column="id" />
+        <collection property="students" javaType="list" ofType="student" select="getStudentByTid" column="id" />
+                                                                         select 表示子查询
+    </resultMap>
+
+    <select id="queryAllTeachers" resultMap="teacherResultMap2">
+        select * from teacher
+    </select>
+
+    <select id="getStudentByTid" parameterType="_int" resultType="student">
+        select * from student where tid = #{tid}
+    </select>-->
+</mapper>

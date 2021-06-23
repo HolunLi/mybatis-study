@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.holun.dao.StudentMapper">
+
+    <!-- 学生和老师的关系,对学生而言是多对一的关系 -->
+
+<!--
+    查询所有的学生(嵌套查询)
+    因为Student类中的teacher属性比较特殊,它也是一个对象,因此要对这个属性进行单独处理
+    做法一:根据查询出来的学生的tid,查找对应的老师,再赋予Student对象的teacher属性
+    <resultMap id="studentResultMap" type="student">
+        <result property="id" column="id" />
+        <result property="name" column="name" />
+        对于复杂的属性要单独处理。若这个属性也是一个javabean对象则使用association，若这个属性是一个集合则使用collection
+        javaType是实体类中属性的类型
+        <association property="teacher" javaType="teacher" column="tid" select="queryTeacherById" />
+    </resultMap>
+
+    <select id="queryAllStudent" resultMap="studentResultMap">
+        select * from student
+    </select>
+
+    <select id="queryTeacherById" parameterType="_int" resultType="teacher">
+        select * from teacher where id = #{tid}
+    </select>
+    -->
+
+    <!-- 查询所有的学生（连接查询） -->
+    <select id="queryAllStudent" resultMap="studentResultMap">
+        select student.id as sid,student.name,teacher.id as tid, teacher.name as teacher
+        from student inner join teacher
+        on student.tid=teacher.id
+    </select>
+
+    <resultMap id="studentResultMap" type="student">
+        <result property="id" column="sid" />
+        <result property="name" column="name" />
+        <association property="teacher" javaType="teacher" >
+            <result property="id" column="tid" />
+            <result property="name" column="teacher" />
+        </association>
+    </resultMap>
+
+
+</mapper>

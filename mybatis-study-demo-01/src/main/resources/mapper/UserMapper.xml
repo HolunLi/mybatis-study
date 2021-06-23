@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 绑定一个对应的dao/mapper接口 -->
+<mapper namespace="com.holun.dao.UserMapper">
+    <!-- <select>标记, 对应的就是sql中的查询语句 -->
+    <select id="getUserList" resultType="com.holun.entity.User">
+        select * from user
+    </select>
+
+    <select id="getUserById" parameterType="_int" resultType="com.holun.entity.User">
+        select * from user where id = #{id}
+    </select>
+
+    <!--对象中的属性可以直接取出来-->
+    <insert id="addUser" parameterType="com.holun.entity.User" >
+        insert into user values (#{id},#{name},#{pwd})
+    </insert>
+
+    <update id="updateUser" parameterType="map">
+        update user set pwd=#{pwd} where id=#{id}
+    </update>
+
+    <delete id="deleteUserById" parameterType="_int">
+        delete from user where id=#{id}
+    </delete>
+
+    <!-- 模糊查询 -->
+    <select id="selectUserByLike" parameterType="String" resultType="com.holun.entity.User">
+        select * from user where name like concat('%', #{value}, '%')
+    </select>
+
+    <!--<select id="selectUserByLike" parameterType="String" resultType="com.holun.entity.User">
+        select * from user where name like ""#{value}"%"
+    </select>-->
+</mapper>
+
+        <!-- UserMapper.xml是一个sql映射文件,在该文件中编写sql语句,mybatis会执行这些sql -->
+        <!-- 映射文件UserMapper.xml 可以理解为UserMapper接口的实现类 -->

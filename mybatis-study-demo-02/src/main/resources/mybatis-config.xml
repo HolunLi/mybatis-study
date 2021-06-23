@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!--mybatis的主配置文件，在该文件中主要定义数据库的配置信息,sql映射文件的位置-->
+<configuration>
+
+    <!--属性配置 -->
+    <!-- 引入外部属性配置文件db-config.properties-->
+    <!-- 先读取properties元素体内的属性,再读取外部文件中的属性。如果外部文件中有属性与properties元素体内的属性同名，则使用外部文件中的属性将其覆盖 -->
+    <properties resource="db-config.properties">
+        <property name="password" value="123"/> <!-- 这里的password属性是properties元素体内的属性 -->
+    </properties>
+
+    <settings>
+        <!-- 标准日志工厂的实现 -->
+        <!--<setting name="logImpl" value="STDOUT_LOGGING"/>-->
+        <!-- log4j日志工厂的实现 -->
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
+    
+    <!--类型别名配置，可以为为实体类起别名-->
+    <typeAliases>
+        <package name="com.holun.entity"/>
+       <!-- <typeAlias type="com.holun.entity.User" alias="User" />--> <!-- 注意:自定义的别名是不区分大小写的,因此在使用别名时，大小写任意-->
+    </typeAliases>
+
+    <!-- 环境配置: 配置数据库的连接信息 -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/> <!--Mybatis默认使用JDBC作为事务管理器，提交和回滚事务-->
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 映射器配置 -->
+    <!-- 每一个sql映射文件, 都需要在mybatis主配置文件中注册（指明映射文件的路径，告诉MyBatis 去哪里找映射文件-->
+    <mappers>
+        <!-- 注册映射文件的常用3种方式 -->
+
+        <!-- 方法一:使用相对于类路径的资源引用,即直接指向类路径中的映射文件（映射文件少的情况下，推荐使用）-->
+        <!--<mapper resource="mapper/UserMapper.xml" />-->
+
+        <!-- 方法二:将指定包中的映射器接口的实现类,全部注册为映射器（映射文件非常多的情况下，推荐使用）
+             使用该方法,映射文件与对应的Mapper接口可以在同一个目录中,
+             也可以将映射文件放在resources目录里,但要和接口的包结构一致-->
+             <package name="com.holun.dao" />
+
+        <!-- 方法三:使用映射器接口实现类的完全限定类名（完整类名）（不推荐）
+              使用该方法,映射文件与对应的Mapper接口可以在同一个目录中,
+              也可以将映射文件放在resources目录里,但要和接口的包结构一致-->
+        <!--注意: 有的IDEA版本在resource下创建包名,是不会区分是不是要分级的,所以你要一级一级的创建-->
+        <!--<mapper class="com.holun.dao.UserMapper" />-->
+    </mappers>
+
+</configuration>
+
+
+                                          <!-- mybatis主配置文件的学习 -->

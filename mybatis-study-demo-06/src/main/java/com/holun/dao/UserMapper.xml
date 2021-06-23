@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.holun.dao.UserMapper">
+
+    <cache eviction="FIFO" size="512" readOnly="true" /> <!--开启二级缓存-->
+    <!--
+    在当前映射文件(mapper)中启用二级缓存后，该映射文件中的所有 select 语句的查询结果将会被缓存到对应的二级缓存中（缓存区）。
+    该映射文件中的所有 insert、update 和 delete 语句都会刷新缓存。
+    注: 不同的映射文件对应二级缓存是相互独立的，即一个映射文件对应一个二级缓存。因此不同的映射文件对应的二级缓存中的数据时不能共享的。
+    除非在当前映射文件中，使用<cache-ref>标签引入另一个二级缓存。
+    -->
+    <!--
+    readOnly（只读）属性可以被设置为 true 或 false。只读的缓存会给所有调用者返回缓存对象的相同实例。
+    因此这些对象不能被修改。这就提供了可观的性能提升。而可读写的缓存会（通过序列化）返回缓存对象的拷贝。
+    速度上会慢一些，但是更安全，因此默认值是 false。
+    -->
+
+    <select id="getUserList" resultType="user">
+        select * from user
+    </select>
+
+    <select id="queryUserById" parameterType="_int" resultType="user">
+        select * from user where id=#{id}
+    </select>
+</mapper>
